@@ -1,7 +1,9 @@
 package com.oszhugc.logmoniter.endpoint;
 
+import com.oszhugc.logmoniter.utils.FileUtil;
 import com.oszhugc.logmoniter.worker.TailLogThread;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
@@ -34,18 +36,26 @@ public class LogWebSocketHandler {
     @OnOpen
     public void onOpen(Session session){
         try {
-            //执行tail -f 命令
-            //process = Runtime.getRuntime().exec("tail -f /var/log/syslog");
-            //process = Runtime.getRuntime().exec("type C:\\Users\\Administrator\\Desktop\\logmoniter\\pom.xml");
-            //inputStream = process.getInputStream();
-            File file = new File("C:\\Users\\Administrator\\Desktop\\logmoniter\\pom.xml");
-            inputStream = new FileInputStream(file);
-            //启动新的线程,防止InputStream阻塞处理webSocket的线程
-            new TailLogThread(inputStream,session).start();
+            //查找日志文件
+            String logFile = FileUtil.getLogFilePath();
+            if(StringUtils.isEmpty(logFile)){
+                session.getBasicRemote().sendText("配置有问题,请联系管理员");
+            }else {
+                //执行tail -f 命令
+                process = Runtime.getRuntime().exec("tail -f "+logFile);
+                inputStream = process.getInputStream();
+                //File file = new File("C:\\Users\\Administrator\\Desktop\\logmoniter\\pom.xml");
+                //inputStream = new FileInputStream(file);
+                //启动新的线程,防止InputStream阻塞处理webSocket的线程
+                new TailLogThread(inputStream,session).start();
+            }
+
         }catch (IOException e){
             e.printStackTrace();
         }
     }
+
+
 
 
     /**

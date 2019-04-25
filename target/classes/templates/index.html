@@ -1,25 +1,65 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<title>日志监控系统</title>
-<script src="//cdn.bootcss.com/jquery/2.1.4/jquery.js"></script>
+	<meta charset="utf-8">
+	<title>日志监控系统</title>
+	<script src="//cdn.bootcss.com/jquery/2.1.4/jquery.js"></script>
+	<link rel="icon" type="image/x-icon" href="/favicon.ico">
+	<style>
+		html,body{
+			height: 100%;
+			overflow-y: hidden;
+		}
+		.header{
+			background: #333;
+			color: #aaa;
+			padding: 15px;
+			padding-left: 30px;
+			font-size: 30px;
+		}
+		.container{
+			height: 75%;
+			overflow-y: scroll;
+			background: #333;
+			color: #aaa;
+			padding: 25px;
+
+		}
+		.footer{
+			position:fixed;
+			left:0px;
+			bottom:0px;
+			width:100%;
+			height:50px;
+			background-color:#fff;
+			z-index:9999;
+			text-align:center;
+			font-size: 16px;
+		}
+		a{ text-decoration:none}
+	</style>
 </head>
 <body>
-	<div id="log-container" style="height: 1000px; overflow-y: scroll; background: #333; color: #aaa; padding: 10px;">
+	<div class="header">
+		日志监控系统
+	</div>
+	<div class="container">
 		<div>
 		</div>
+	</div>
+	<div class="footer">
+		Created by oszhugc, see <a href="https://github.com/oszhugc/logmoniter",target="_blank">https://github.com/oszhugc/logmoniter</a> for details
 	</div>
 </body>
 <script>
 	$(document).ready(function() {
 		// 指定websocket路径
-		var websocket = new WebSocket('ws://localhost:8088/logmoniter/log');
+		var websocket = new WebSocket('ws://localhost:56518/log');
 		websocket.onmessage = function(event) {
 			// 接收服务端的实时日志并添加到HTML页面中
-			$("#log-container div").append(event.data);
+			$(".container div").append(event.data);
 			// 滚动条滚动到最低部
-			$("#log-container").scrollTop($("#log-container div").height() - $("#log-container").height());
+			$(".container").scrollTop($(".container div").height() - $(".container").height());
 		};
 	});
 </script>

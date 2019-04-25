@@ -3,6 +3,13 @@ spring:
     prefix: classpath:/templates/
 
 server:
-  port: 8088
+  port: 56518
   servlet:
-    context-path: "/logmoniter"
+    context-path: "/"
+
+websocket:
+  path: /home/work/xxx.log
+  local: true
+  url: xxx
+  username: xxx
+  password: xxx
