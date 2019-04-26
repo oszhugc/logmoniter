@@ -37,12 +37,13 @@ public class LogWebSocketHandler {
     public void onOpen(Session session){
         try {
             //查找日志文件
+            FileUtil.init();
             String logFile = FileUtil.getLogFilePath();
             if(StringUtils.isEmpty(logFile)){
                 session.getBasicRemote().sendText("配置有问题,请联系管理员");
             }else {
                 //执行tail -f 命令
-                process = Runtime.getRuntime().exec("tail -f "+logFile);
+                process = Runtime.getRuntime().exec("tail -200f "+logFile);
                 inputStream = process.getInputStream();
                 //File file = new File("C:\\Users\\Administrator\\Desktop\\logmoniter\\pom.xml");
                 //inputStream = new FileInputStream(file);

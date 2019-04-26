@@ -31,8 +31,10 @@ public class TailLogThread  extends Thread{
                 //将实施日志通过websockect发送给客户端,给每一行添加一个换行
                 session.getBasicRemote().sendText(line + "<br/>");
             }
+            session.getBasicRemote().sendText( "没有读取到数据!!!");
         }catch (IOException e){
             e.printStackTrace();
         }
+
     }
 }

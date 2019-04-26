@@ -1,7 +1,13 @@
 spring:
   thymeleaf:
     prefix: classpath:/templates/
-
+  security:
+    basic:
+      path: /**
+      enable: true
+    user:
+      name: crm
+      password: crm
 server:
   port: 56518
   servlet:
